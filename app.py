@@ -6,9 +6,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
-DATABASE_PATH = os.path.join(basedir, "hotelbca.db")
+# DATABASE_PATH = os.path.join(basedir, "hotelbca.db")
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + DATABASE_PATH
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "mysql+mysqlconnector://root:FUeY6phVMNPy7EGkNi3V@containers-us-west-48.railway.app:7708/railway"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Swagger
