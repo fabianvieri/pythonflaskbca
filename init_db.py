@@ -41,4 +41,4 @@ booking = Table(
 
 metadata.create_all(engine)
 
-print("Database hotelbca.db dan table booking dan room telah berhasil dibuat!")
+print("Database telah berhasil dibuat!")
