@@ -11,7 +11,9 @@ from sqlalchemy import (
     Table,
 )
 
-DATABASE_URI = "sqlite:///hotelbca.db"
+DATABASE_URI = (
+    "mysql://root:FUeY6phVMNPy7EGkNi3V@containers-us-west-48.railway.app:7708/railway"
+)
 engine = create_engine(DATABASE_URI, echo=True)
 metadata = MetaData()
 
