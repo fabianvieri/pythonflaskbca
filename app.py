@@ -1,16 +1,16 @@
 import os
-from flask import Flask, render_template
 from flasgger import Swagger
+from flask import Flask, render_template
+
+from decouple import config
+
+MYSQL_URL = config("MYSQL_URL")
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
-# DATABASE_PATH = os.path.join(basedir, "hotelbca.db")
-
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = "mysql+mysqlconnector://root:FUeY6phVMNPy7EGkNi3V@containers-us-west-48.railway.app:7708/railway"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+mysqlconnector://{MYSQL_URL}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Swagger
@@ -55,4 +55,4 @@ app.register_blueprint(room_bp)
 app.register_blueprint(booking_bp)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5020)

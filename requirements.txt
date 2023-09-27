@@ -19,7 +19,7 @@ flask-restplus==0.13.0
 Flask-SQLAlchemy==3.1.1
 flask-swagger-ui==4.11.1
 greenlet==2.0.2
-gunicorn
+gunicorn==21.2.0
 idna==3.4
 inflection==0.5.1
 itsdangerous==2.1.2
@@ -31,13 +31,14 @@ marshmallow==3.20.1
 marshmallow-sqlalchemy==0.29.0
 mistune==3.0.1
 mypy-extensions==1.0.0
-mysql-connector-python
+mysql-connector-python==8.1.0
 packaging==23.1
 pathspec==0.11.2
 platformdirs==3.10.0
 protobuf==4.21.12
-psycopg2
+psycopg2==2.9.7
 PyMySQL==1.1.0
+python-decouple==3.8
 pytz==2023.3.post1
 PyYAML==6.0.1
 referencing==0.30.2
