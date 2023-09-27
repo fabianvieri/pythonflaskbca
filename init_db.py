@@ -11,9 +11,11 @@ from sqlalchemy import (
     Table,
 )
 
-DATABASE_URI = (
-    "mysql://root:FUeY6phVMNPy7EGkNi3V@containers-us-west-48.railway.app:7708/railway"
-)
+from decouple import config
+
+MYSQL_URL = config("MYSQL_URL")
+
+DATABASE_URI = f"mysql://{MYSQL_URL}"
 engine = create_engine(DATABASE_URI, echo=True)
 metadata = MetaData()
 
