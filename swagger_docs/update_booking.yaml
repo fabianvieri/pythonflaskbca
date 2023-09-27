@@ -1,0 +1,42 @@
+openapi: 3.0.0
+
+info:
+  title: Booking Data Hotel BCA
+  version: 1.0.0
+
+tags:
+  - name: API List
+
+parameters:
+  - name: booking_id
+    in: path
+    description: Booking ID to be updated
+    required: true
+    type: integer
+  - in: body
+    name: body
+    description: Booking Data to be updated
+    required: true
+    schema:
+      type: object
+      properties:
+        room_id:
+          type: integer
+        customer_name:
+          type: string
+        check_in_date:
+          type: string
+          format: date
+        check_out_date:
+          type: string
+          format: date
+
+responses:
+  200:
+    description: Booking updated
+    schema:
+      $ref: '#/definitions/Booking'
+  400:
+    description: Invalid Booking data
+  404:
+    description: Booking not found

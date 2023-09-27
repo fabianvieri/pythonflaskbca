@@ -1,0 +1,175 @@
+{% extends 'layout.html' %} {% block content %}
+<a href="/" class="home-button-display">Home 🏠</a>
+<h1>{% block title %} Booking List {% endblock %}</h1>
+{% if bookings|length > 0 %}
+<table>
+  <thead>
+    <tr>
+      <th>Room ID</th>
+      <th>Customer Name</th>
+      <th>Check In Date</th>
+      <th>Check Out Date</th>
+      <th>Total Price</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in bookings %}
+    <tr>
+      <td>{{ book.room_id}}</td>
+      <td>{{ book.customer_name}}</td>
+      <td>{{ book.check_in_date}}</td>
+      <td>{{ book.check_out_date}}</td>
+      <td>Rp.{{ book.total_price}}</td>
+      <td>
+        <button
+          class="update-button"
+          onclick="showUpdateForm('{{book.booking_id}}','{{book.room_id}}', '{{book.customer_name}}', '{{book.check_in_date}}', '{{book.check_out_date}}')"
+          >Update</button
+        >
+        <button
+          class="delete-button"
+          onclick="deleteBooking('{{book.booking_id}}')"
+          >Delete</button
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br />
+<div id="formContainer" style="display: none">
+  <form id="updateForm">
+    <h2>Update Booking</h2>
+    <br />
+    <input type="hidden" name="booking_id" id="booking_id" />
+    <label for="room_id">Room ID</label>
+    <input
+      type="number"
+      name="room_id"
+      id="room_id"
+      step="1"
+      min="1"
+      placeholder="Room ID"
+      required />
+    <br />
+    <label for="customer_name">Customer Name</label>
+    <input
+      type="text"
+      name="customer_name"
+      id="customer_name"
+      placeholder="Customer Name"
+      required />
+    <br />
+    <label for="check_in_date">Check In Date</label>
+    <input
+      type="date"
+      name="check_in_date"
+      id="check_in_date"
+      placeholder="Check In Date"
+      required />
+    <br />
+    <label for="check_out_date">Check Out Date</label>
+    <input
+      type="date"
+      name="check_out_date"
+      id="check_out_date"
+      placeholder="Check Out Date"
+      required />
+    <br />
+    <p class="error-message none" id="error">{{error}}</p>
+    <br />
+    <input type="submit" value="Update" />
+  </form>
+</div>
+{% else %}
+<p class="error-message">No Booking Data</p>
+{% endif %}
+<script>
+  const form = document.getElementById('updateForm');
+  if (form) form.addEventListener('submit', updateBooking);
+
+  function showUpdateForm(
+    booking_id,
+    room_id,
+    customer_name,
+    check_in_date,
+    check_out_date
+  ) {
+    document.getElementById('booking_id').value = booking_id;
+    document.getElementById('room_id').value = room_id;
+    document.getElementById('customer_name').value = customer_name;
+    document.getElementById('check_in_date').value = check_in_date;
+    document.getElementById('check_out_date').value = check_out_date;
+    document.getElementById('formContainer').style.display = 'block';
+  }
+
+  async function updateBooking(e) {
+    e.preventDefault();
+    const booking_id = document.getElementById('booking_id').value;
+    const room_id = document.getElementById('room_id').value;
+    const customer_name = document.getElementById('customer_name').value;
+    const check_in_date = document.getElementById('check_in_date').value;
+    const check_out_date = document.getElementById('check_out_date').value;
+    const error = document.getElementById('error');
+
+    try {
+      const res = await fetch(`/booking/${booking_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          room_id,
+          customer_name,
+          check_in_date,
+          check_out_date,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        error.classList.remove('none');
+        error.textContent = data.message;
+        return;
+      }
+
+      alert(`Booking ID: ${id} successfully updated`);
+      location.reload();
+    } catch (error) {
+      console.error(error);
+      alert('There is unknown error when updating data');
+    }
+  }
+
+  async function deleteBooking(id) {
+    const isConfirmed = confirm(
+      `Are you sure want to delete Booking ID: ${id}?`
+    );
+
+    if (isConfirmed) {
+      const error = document.getElementById('error');
+      try {
+        const res = await fetch(`/booking/${id}`, {
+          method: 'DELETE',
+        });
+        const data = await res.json();
+        console.log(res.ok);
+
+        if (!res.ok) {
+          error.style.display = 'block';
+          error.textContent = data.message;
+          return;
+        }
+
+        alert(`Booking ID: ${id} successfully deleted`);
+        location.reload();
+      } catch (error) {
+        console.error(error);
+        alert('There is unknown error when deleting data');
+      }
+    }
+  }
+</script>
+{% endblock %}

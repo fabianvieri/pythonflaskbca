@@ -1,0 +1,142 @@
+{% extends 'layout.html' %} {% block content %}
+<a href="/" class="home-button-display">Home 🏠</a>
+<h1>{% block title %} Room List {% endblock %}</h1>
+{% if rooms|length > 0 %}
+<table>
+  <thead>
+    <tr>
+      <th>Room ID</th>
+      <th>Type</th>
+      <th>Price Per Night</th>
+      <th>Availibility</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for room in rooms %}
+    <tr>
+      <td>{{ room.room_id}}</td>
+      <td>{{ room.type}}</td>
+      <td>Rp.{{ room.price_per_night}}</td>
+      {% if room.availibility %}
+      <td>✅</td>
+      {% else %}
+      <td>❌</td>
+      {% endif %}
+      <td>
+        <button
+          class="update-button"
+          onclick="showUpdateForm('{{room.room_id}}', '{{room.type}}', '{{room.price_per_night}}', '{{room.availibility}}')"
+          >Update</button
+        >
+        <button class="delete-button" onclick="deleteRoom('{{room.room_id}}')"
+          >Delete</button
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br />
+<div id="formContainer" style="display: none">
+  <form id="updateForm">
+    <h2>Update Room</h2>
+    <br />
+    <input type="hidden" name="room_id" id="room_id" />
+    <label for="type">Type</label>
+    <input type="text" name="type" id="type" placeholder="Room Type" required />
+    <br />
+    <label for="price">Price Per Night</label>
+    <input
+      type="number"
+      name="price_per_night"
+      id="price"
+      placeholder="Room Price Per Night"
+      required />
+    <br />
+    <input type="radio" id="available" name="availibility" value="1" />
+    <label for="available" class="radio-label">Available</label>
+    <input type="radio" id="not-available" name="availibility" value="0" />
+    <label for="not-available" class="radio-label">Not Available</label>
+    <br />
+    <p class="error-message none" id="error">{{error}}</p>
+    <input type="submit" value="Update" />
+  </form>
+</div>
+{% else %}
+<p class="error-message">No Room Data</p>
+{% endif %}
+<script>
+  const form = document.getElementById('updateForm');
+  if (form) form.addEventListener('submit', updateRoom);
+
+  function showUpdateForm(id, type, price_per_night, availibility) {
+    document.getElementById('room_id').value = id;
+    document.getElementById('type').value = type;
+    document.getElementById('price').value = price_per_night;
+    availibility = availibility === 'True' ? true : false;
+    document.getElementById('available').checked = availibility;
+    document.getElementById('not-available').checked = !availibility;
+    document.getElementById('formContainer').style.display = 'block';
+  }
+
+  async function updateRoom(e) {
+    e.preventDefault();
+    const room_id = document.getElementById('room_id').value;
+    const type = document.getElementById('type').value;
+    const price = document.getElementById('price').value;
+    const availibility = document.querySelector(
+      'input[name="availibility"]:checked'
+    ).value;
+    const error = document.getElementById('error');
+
+    try {
+      const res = await fetch(`/room/${room_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ type, price_per_night: price, availibility }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        error.style.display = 'block';
+        error.textContent = data.message;
+        return;
+      }
+
+      alert(`Room ID: ${room_id} successfully updated`);
+      location.reload();
+    } catch (error) {
+      console.error(error);
+      alert('There is unknown error when updating data');
+    }
+  }
+
+  async function deleteRoom(id) {
+    const isConfirmed = confirm(`Are you sure want to delete Room ID: ${id}?`);
+    if (isConfirmed) {
+      const error = document.getElementById('error');
+      try {
+        const res = await fetch(`/room/${id}`, {
+          method: 'DELETE',
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          error.classList.remove('none');
+          error.textContent = data.message;
+          return;
+        }
+
+        alert(`Room ID: ${id} successfully deleted`);
+        location.reload();
+      } catch (error) {
+        console.error(error);
+        alert('There is unknown error when deleting data');
+      }
+    }
+  }
+</script>
+{% endblock %}

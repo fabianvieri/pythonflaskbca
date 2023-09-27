@@ -1,0 +1,24 @@
+{% extends 'layout.html' %} {% block content %}
+<h1>{% block title %} Create Room {% endblock %}</h1>
+<div class="form-container">
+  <form action="/create-room" method="post">
+    <label for="type">Type</label>
+    <input type="text" name="type" id="type" placeholder="Room Type" required />
+    <br />
+    <label for="price_per_night">Price Per Night</label>
+    <input
+      type="number"
+      name="price_per_night"
+      id="price_per_night"
+      placeholder="Room Price Per Night"
+      required />
+    <br />
+    {% if error %}
+    <p class="error-message">{{error}}</p>
+    {% endif %}
+    <br />
+    <input type="submit" value="Create" />
+  </form>
+  <a href="/" class="home-button yellow-button">Home 🏠</a>
+</div>
+{% endblock %}

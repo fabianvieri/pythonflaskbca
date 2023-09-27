@@ -1,0 +1,44 @@
+openapi: 3.0.0
+
+info:
+  title: Booking Data Hotel BCA
+  version: 1.0.0
+
+tags:
+  - name: API List
+
+parameters:
+  - in: body
+    name: body
+    description: Booking data to be created
+    required: true
+    schema:
+      $ref: '#/definitions/Booking'
+
+responses:
+  201:
+    description: Booking created
+    schema:
+      $ref: '#/definitions/Booking'
+  400:
+    description: Invalid Booking data
+
+definitions:
+  Booking:
+    type: object
+    properties:
+      room_id:
+        type: integer
+      customer_name:
+        type: string
+      check_in_date:
+        type: string
+        format: date
+      check_out_date:
+        type: string
+        format: date
+      required:
+        - room_id
+        - customer_name
+        - check_in_date
+        - check_out_date

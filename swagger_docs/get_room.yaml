@@ -1,0 +1,36 @@
+openapi: 3.0.0
+
+info:
+  title: Booking Data Hotel BCA
+  version: 1.0.0
+
+tags:
+  - name: API List
+
+definitions:
+  Room:
+    type: object
+    properties:
+      room_id:
+        type: integer
+      type:
+        type: string
+      price_per_night:
+        type: number
+      availibility:
+        type: boolean
+
+parameters:
+  - name: room_id
+    in: path
+    description: Room ID
+    required: true
+    type: integer
+
+responses:
+  200:
+    description: Room Data by ID
+    schema:
+      $ref: '#/definitions/Room'
+  404:
+    description: Room not found

@@ -1,0 +1,72 @@
+{% extends 'layout.html' %} {% block content %}
+<h1>{% block title %} Create Booking {% endblock %}</h1>
+<br />
+{% if rooms %}
+<table class="table-container">
+  <thead>
+    <tr>
+      <th>Room ID</th>
+      <th>Type</th>
+      <th>Price Per Night</th>
+      <th>Available</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for room in rooms %}
+    <tr>
+      <td>{{ room.room_id}}</td>
+      <td>{{ room.type}}</td>
+      <td>{{ room.price_per_night}}</td>
+      {% if room.availibility %}
+      <td>✅</td>
+      {% else %}
+      <td>❌</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+<div class="form-container">
+  <form action="/create-booking" method="post">
+    <label for="room_id">Room ID</label>
+    <input
+      type="number"
+      name="room_id"
+      id="room_id"
+      step="1"
+      min="1"
+      placeholder="Room ID"
+      required />
+    <br />
+    <label for="customer_name">Customer Name</label>
+    <input
+      type="text"
+      name="customer_name"
+      id="customer_name"
+      placeholder="Customer Name"
+      required />
+    <br />
+    <label for="check_in_date">Check In Date</label>
+    <input
+      type="date"
+      name="check_in_date"
+      id="check_in_date"
+      placeholder="Check In Date"
+      required />
+    <br />
+    <label for="check_out_date">Check Out Date</label>
+    <input
+      type="date"
+      name="check_out_date"
+      id="check_out_date"
+      placeholder="Check Out Date"
+      required />
+    {% if error %}
+    <p class="error-message">{{error}}</p>
+    {% endif %}
+    <input type="submit" value="Create" />
+  </form>
+  <a href="/" class="home-button yellow-button">Home 🏠</a>
+</div>
+{% endblock %}
