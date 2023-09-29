@@ -104,6 +104,7 @@ def get_room(room_id):
 @swag_from(os.path.join(swagger_dir, "update_room.yaml"))
 def update_room(room_id):
     try:
+        print("masuk")
         room = db.session.get(Room, room_id)
         # check room
         if not room:
@@ -114,7 +115,7 @@ def update_room(room_id):
         price_per_night = data["price_per_night"]
         availibility = data["availibility"]
 
-        availibility = 1 if availibility == "1" else 0
+        availibility = 1 if availibility else 0
 
         room.type = type
         room.price_per_night = price_per_night
