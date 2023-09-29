@@ -1,0 +1,6 @@
+(.venv) C:\Users\u068921\Documents\Learn\Flask\hotelbca>python test_app.py
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.298s
+
+OK
