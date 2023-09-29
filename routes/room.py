@@ -114,7 +114,8 @@ def update_room(room_id):
         price_per_night = data["price_per_night"]
         availibility = data["availibility"]
 
-        availibility = 1 if availibility else 0
+        str_availibility = str(availibility)
+        availibility = 1 if str_availibility == "1" or str_availibility == "True" else 0
 
         room.type = type
         room.price_per_night = price_per_night
