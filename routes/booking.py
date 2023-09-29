@@ -170,6 +170,10 @@ def update_booking(booking_id):
 
         # set room booking availibility
         if str(old_room_id) != new_room_id:
+            # check new room
+            if not new_room_booking:
+                return jsonify({"message": "Room is not available"}), 404
+
             # check room availibility
             if not new_room_booking.availibility:
                 return jsonify({"message": "Room is not available"}), 404
@@ -209,7 +213,8 @@ def delete_booking(booking_id):
 
         # set room to available
         room_booking = db.session.get(Room, booking.room_id)
-        room_booking.availibility = 1
+        if room_booking:
+            room_booking.availibility = 1
 
         db.session.delete(booking)
         db.session.commit()
