@@ -104,7 +104,6 @@ def get_room(room_id):
 @swag_from(os.path.join(swagger_dir, "update_room.yaml"))
 def update_room(room_id):
     try:
-        print("masuk")
         room = db.session.get(Room, room_id)
         # check room
         if not room:
